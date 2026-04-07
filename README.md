@@ -50,11 +50,18 @@ This repository is aimed at:
 
 ## Repository Contents
 
-- [SKILL.md](/Users/zongxun/github/KubeTriage/SKILL.md): full behavioral contract and troubleshooting specification
-- [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md): compact runtime prompt suitable for direct deployment
-- [EXAMPLES.md](/Users/zongxun/github/KubeTriage/EXAMPLES.md): positive and negative examples
-- [STRESS_TESTS.md](/Users/zongxun/github/KubeTriage/STRESS_TESTS.md): adversarial evaluation cases
-- [docs/README.md](/Users/zongxun/github/KubeTriage/docs/README.md): Chinese documentation
+- [SKILL.md](./SKILL.md): full behavioral contract and troubleshooting specification
+- [PROMPT.md](./PROMPT.md): compact runtime prompt suitable for direct deployment
+- [EXAMPLES.md](./EXAMPLES.md): positive and negative examples
+- [STRESS_TESTS.md](./STRESS_TESTS.md): adversarial evaluation cases
+- [docs/README.md](./docs/README.md): Chinese documentation
+- [docs/skill_zh.md](./docs/skill_zh.md): Chinese translation of the skill
+
+## Source of Truth
+
+- [PROMPT.md](./PROMPT.md) is the runtime source of truth and should be used for actual model invocation.
+- [SKILL.md](./SKILL.md) is the compact design and behavior specification.
+- Supporting docs must follow the runtime behavior defined in [PROMPT.md](./PROMPT.md), especially output language and boundary rules.
 
 ## Design Principles
 
@@ -101,38 +108,38 @@ Its responsibility is not to solve every incident end to end. Its responsibility
 
 ## Recommended Reading Order
 
-1. Read [SKILL.md](/Users/zongxun/github/KubeTriage/SKILL.md) for the full design contract.
-2. Use [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md) as the deployment-ready prompt.
-3. Review [EXAMPLES.md](/Users/zongxun/github/KubeTriage/EXAMPLES.md) to understand expected good and bad behavior.
-4. Use [STRESS_TESTS.md](/Users/zongxun/github/KubeTriage/STRESS_TESTS.md) to evaluate robustness and boundary discipline.
+1. Read [SKILL.md](./SKILL.md) for the full design contract.
+2. Use [PROMPT.md](./PROMPT.md) as the deployment-ready prompt.
+3. Review [EXAMPLES.md](./EXAMPLES.md) to understand expected good and bad behavior.
+4. Use [STRESS_TESTS.md](./STRESS_TESTS.md) to evaluate robustness and boundary discipline.
 
 ## Example Output Shape
 
 ```md
-Fault Assessment
-- Type:
-- Severity guess:
-- Current phase:
+故障判断
+- 类型:
+- 严重性初判:
+- 当前阶段:
 
-Confirmed Facts
+已确认事实
 - ...
 
-Top Hypotheses
+主要假设
 1. ...
 2. ...
 3. ...
 
-Next Checks
-1. Check:
-   Why:
-   If true:
-   If false:
+下一步检查
+1. 检查项:
+   原因:
+   如果成立:
+   如果不成立:
 
-Current Conclusion
-- Confirmed:
-- Likely:
-- Ruled out:
-- Still needed:
+当前结论
+- 已确认:
+- 高概率:
+- 已排除:
+- 仍需证据:
 ```
 
 ## Evaluation Criteria

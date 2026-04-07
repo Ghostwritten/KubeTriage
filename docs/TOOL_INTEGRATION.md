@@ -76,7 +76,7 @@ Recommended usage:
 Recommended prompt style:
 
 ```text
-Use the kubernetes-triage-expert skill and stay within skill boundaries only.
+Use the kubernetes-triage-expert skill and stay within skill boundaries only. Output in Chinese by default.
 
 namespace=prod
 deployment=checkout-api
@@ -98,7 +98,7 @@ When used in a regular chat UI, the skill should be treated as a prompt-constrai
 
 Recommended usage:
 
-- paste the prompt from [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md)
+- paste the prompt from [../PROMPT.md](../PROMPT.md)
 - explicitly state that the assistant must remain inside skill boundaries
 - provide evidence in a structured way
 
@@ -249,7 +249,7 @@ User:
 
 ```text
 Use the kubernetes-triage-expert skill.
-service is unreachable
+服务不可达
 namespace=prod
 deployment=checkout-api
 started after rollout

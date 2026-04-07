@@ -43,10 +43,17 @@
 
 ## 仓库内容
 
-- [SKILL.md](/Users/zongxun/github/KubeTriage/SKILL.md)：完整 skill 规范与行为约束
-- [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md)：可直接投喂模型的精简 prompt
-- [EXAMPLES.md](/Users/zongxun/github/KubeTriage/EXAMPLES.md)：正反例示例集
-- [STRESS_TESTS.md](/Users/zongxun/github/KubeTriage/STRESS_TESTS.md)：压力测试用例
+- [SKILL.md](../SKILL.md)：完整 skill 规范与行为约束
+- [PROMPT.md](../PROMPT.md)：可直接投喂模型的精简 prompt
+- [EXAMPLES.md](../EXAMPLES.md)：正反例示例集
+- [STRESS_TESTS.md](../STRESS_TESTS.md)：压力测试用例
+- [skill_zh.md](./skill_zh.md)：`SKILL.md` 的中文翻译
+
+## 规范主文件
+
+- [PROMPT.md](../PROMPT.md) 是运行时主文件，应以它为准。
+- [SKILL.md](../SKILL.md) 是设计与行为规范文件。
+- 其他文档都应服从 [PROMPT.md](../PROMPT.md) 中定义的边界、语言和输出规则。
 
 ## 设计原则
 
@@ -93,38 +100,38 @@
 
 ## 推荐使用顺序
 
-1. 先阅读 [SKILL.md](/Users/zongxun/github/KubeTriage/SKILL.md)，理解完整约束和设计逻辑。
-2. 使用 [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md) 作为运行时 prompt。
-3. 通过 [EXAMPLES.md](/Users/zongxun/github/KubeTriage/EXAMPLES.md) 观察好输出与坏输出的差异。
-4. 使用 [STRESS_TESTS.md](/Users/zongxun/github/KubeTriage/STRESS_TESTS.md) 做稳定性与边界测试。
+1. 先阅读 [SKILL.md](../SKILL.md)，理解完整约束和设计逻辑。
+2. 使用 [PROMPT.md](../PROMPT.md) 作为运行时 prompt。
+3. 通过 [EXAMPLES.md](../EXAMPLES.md) 观察好输出与坏输出的差异。
+4. 使用 [STRESS_TESTS.md](../STRESS_TESTS.md) 做稳定性与边界测试。
 
 ## 输出结构示例
 
 ```md
-Fault Assessment
-- Type:
-- Severity guess:
-- Current phase:
+故障判断
+- 类型:
+- 严重性初判:
+- 当前阶段:
 
-Confirmed Facts
+已确认事实
 - ...
 
-Top Hypotheses
+主要假设
 1. ...
 2. ...
 3. ...
 
-Next Checks
-1. Check:
-   Why:
-   If true:
-   If false:
+下一步检查
+1. 检查项:
+   原因:
+   如果成立:
+   如果不成立:
 
-Current Conclusion
-- Confirmed:
-- Likely:
-- Ruled out:
-- Still needed:
+当前结论
+- 已确认:
+- 高概率:
+- 已排除:
+- 仍需证据:
 ```
 
 ## 评估标准

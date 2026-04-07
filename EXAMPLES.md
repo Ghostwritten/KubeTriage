@@ -13,24 +13,24 @@ These examples are intended to validate behavior, not provide generic troublesho
 ### Good Response
 
 ```md
-Fault Assessment
-- Type: startup failure or crash after start
-- Severity guess: unknown
-- Current phase: intake
+故障判断
+- 类型: startup failure 或 crash after start
+- 严重性初判: unknown
+- 当前阶段: intake
 
-Confirmed Facts
+已确认事实
 - A pod is not becoming healthy
 
-Next Questions
+下一步问题
 1. 请给出 namespace、workload 名称、Pod 当前状态。
 2. 请给出开始时间，以及是否刚做过发布、镜像、ConfigMap 或 Secret 变更。
 3. 请给出一条最关键的报错原文，优先是 Events 或容器日志。
 
-Current Conclusion
-- Confirmed: 目前只能确认是工作负载异常，无法确认是调度、启动还是探针问题。
-- Likely: 信息不足，暂不排序根因。
-- Ruled out: 无。
-- Still needed: Pod 状态、时间线、最近变更、报错原文。
+当前结论
+- 已确认: 目前只能确认是工作负载异常，无法确认是调度、启动还是探针问题。
+- 高概率: 信息不足，暂不排序根因。
+- 已排除: 无。
+- 仍需证据: Pod 状态、时间线、最近变更、报错原文。
 ```
 
 ### Why This Is Good
@@ -55,23 +55,23 @@ Pod 状态是 CrashLoopBackOff
 ### Good Response
 
 ```md
-Fault Assessment
-- Type: crash after start
-- Severity guess: medium to high if all replicas are affected
-- Current phase: active triage
+故障判断
+- 类型: crash after start
+- 严重性初判: 如果所有副本都受影响，则为 medium to high
+- 当前阶段: active triage
 
-Confirmed Facts
+已确认事实
 - Workload: prod / Deployment / checkout-api
 - The issue began around the latest rollout
 - Pods are in CrashLoopBackOff
 - Startup log includes `failed to load config: missing REDIS_URL`
 
-Top Hypotheses
+主要假设
 1. Required environment configuration is missing in the new rollout.
 2. A Secret or ConfigMap reference changed and is no longer wiring `REDIS_URL`.
 3. The application now expects a new variable that older config did not provide.
 
-Next Checks
+下一步检查
 1. Check: Compare the old and new pod env/config sources for `REDIS_URL`.
    Why: The log already points to a concrete startup dependency.
    If true: The rollout/config change is the primary fault path.
@@ -87,11 +87,11 @@ Next Checks
    If true: Prioritize release artifact/config regression.
    If false: Expand to non-release causes.
 
-Current Conclusion
-- Confirmed: The container is failing during startup and the error references missing `REDIS_URL`.
-- Likely: The latest rollout introduced a config/env regression.
-- Ruled out: Nothing yet about cluster-wide scheduling or networking.
-- Still needed: Old vs new env/config source comparison and rollback result.
+当前结论
+- 已确认: 容器在启动阶段失败，且错误明确指向缺少 `REDIS_URL`。
+- 高概率: 最近一次 rollout 引入了 config/env regression。
+- 已排除: 暂无证据表明是 cluster-wide scheduling 或 networking 问题。
+- 仍需证据: old vs new env/config source comparison 和 rollback result。
 ```
 
 ### Why This Is Good
@@ -112,21 +112,21 @@ event 里有 0/6 nodes are available: 3 Insufficient memory, 3 node(s) had untol
 ### Good Response
 
 ```md
-Fault Assessment
-- Type: scheduling failure
-- Severity guess: medium
-- Current phase: active triage
+故障判断
+- 类型: scheduling failure
+- 严重性初判: medium
+- 当前阶段: active triage
 
-Confirmed Facts
+已确认事实
 - The pod is Pending
 - Scheduler reports two concrete blockers: insufficient memory and an untolerated taint
 
-Top Hypotheses
+主要假设
 1. The workload cannot land on the intended nodes because it lacks the required toleration.
 2. The workload requests more memory than the remaining schedulable capacity.
 3. Both constraints apply, and either one alone is enough to block scheduling.
 
-Next Checks
+下一步检查
 1. Check: Inspect the pod tolerations and whether it is expected to run on nodes tainted `dedicated=batch`.
    Why: The scheduler explicitly named this as a blocker.
    If true: Add/correct the toleration or adjust placement intent.
@@ -142,11 +142,11 @@ Next Checks
    If true: Simplify or correct the placement rules.
    If false: Keep the analysis centered on taint and capacity.
 
-Current Conclusion
-- Confirmed: Scheduling is blocked by taint tolerance and/or memory capacity.
-- Likely: This is a placement/capacity issue, not an application startup issue.
-- Ruled out: Crash-loop style root causes.
-- Still needed: Toleration intent and memory request vs eligible-node capacity.
+当前结论
+- 已确认: 调度被 taint tolerance 和/或 memory capacity 阻塞。
+- 高概率: 这是 placement/capacity 问题，而不是应用启动问题。
+- 已排除: Crash-loop 类型根因。
+- 仍需证据: toleration intent 以及 memory request vs eligible-node capacity。
 ```
 
 ## Example 4: Service Unreachable
@@ -162,23 +162,23 @@ deployment 下面的 pod 有两个 Running，一个 Readiness probe failed
 ### Good Response
 
 ```md
-Fault Assessment
-- Type: service unreachable
-- Severity guess: medium
-- Current phase: active triage
+故障判断
+- 类型: service unreachable
+- 严重性初判: medium
+- 当前阶段: active triage
 
-Confirmed Facts
+已确认事实
 - The Service exists
 - Endpoints are empty
 - Backend pods are not all Ready
 - At least one pod is failing readiness probes
 
-Top Hypotheses
+主要假设
 1. The Service has no ready backends because readiness is failing.
 2. The Service selector does not match the intended pods.
 3. Both issues exist: selector mismatch for some pods and readiness failure for others.
 
-Next Checks
+下一步检查
 1. Check: Compare the Service selector with pod labels.
    Why: Empty endpoints are commonly caused by label mismatch.
    If true: Fix selector/label alignment.
@@ -194,11 +194,11 @@ Next Checks
    If true: Re-examine endpoint/controller timing.
    If false: Keep focus on readiness/backend health.
 
-Current Conclusion
-- Confirmed: Service reachability is failing because there are no usable endpoints yet.
-- Likely: Selector mismatch or readiness failure is the direct cause.
-- Ruled out: ClusterIP existence alone does not indicate healthy routing.
-- Still needed: Selector-to-label comparison and readiness failure details.
+当前结论
+- 已确认: Service 不可达是因为当前没有可用 endpoints。
+- 高概率: selector mismatch 或 readiness failure 是直接原因。
+- 已排除: 仅凭 ClusterIP 存在不能说明路由健康。
+- 仍需证据: selector-to-label comparison 和 readiness failure details。
 ```
 
 ## Example 5: Bad Response Pattern

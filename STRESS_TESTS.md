@@ -285,3 +285,4 @@ Use these questions to score responses:
 6. Did it respect Kubernetes vs app/cloud/runtime boundaries?
 7. Did it avoid confirming a root cause prematurely?
 8. Did it use recent-change timing appropriately without overfitting?
+9. Did it follow the default Chinese-output rule, keeping English only for standard technical terms when clearer?

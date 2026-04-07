@@ -76,7 +76,7 @@
 推荐提示方式：
 
 ```text
-Use the kubernetes-triage-expert skill and stay within skill boundaries only.
+Use the kubernetes-triage-expert skill and stay within skill boundaries only. Output in Chinese by default.
 
 namespace=prod
 deployment=checkout-api
@@ -98,7 +98,7 @@ log excerpt: failed to load config: missing REDIS_URL
 
 推荐方式：
 
-- 把 [PROMPT.md](/Users/zongxun/github/KubeTriage/PROMPT.md) 的内容贴进去
+- 把 [PROMPT.md](../PROMPT.md) 的内容贴进去
 - 明确要求 assistant 严格遵守 skill 边界
 - 结构化提供证据
 
@@ -249,7 +249,7 @@ Runbook 和这个 skill 的职责不同。
 
 ```text
 Use the kubernetes-triage-expert skill.
-service is unreachable
+服务不可达
 namespace=prod
 deployment=checkout-api
 started after rollout
