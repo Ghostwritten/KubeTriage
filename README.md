@@ -4,6 +4,117 @@ Kubernetes Triage Expert is a prompt-first troubleshooting skill specification f
 
 This repository defines a narrow and deliberate operating model: structured Kubernetes triage with hard boundaries.
 
+[中文说明](./docs/README_zh.md)
+
+## Quick Start
+
+Pick the environment you use and install the skill there.
+
+### Codex
+
+```bash
+mkdir -p "$CODEX_HOME/skills/kubernetes-triage-expert"
+cp ./SKILL.md "$CODEX_HOME/skills/kubernetes-triage-expert/SKILL.md"
+```
+
+If `CODEX_HOME` is not set in your shell, use the concrete path instead:
+
+```bash
+mkdir -p /Users/zongxun/.codex/skills/kubernetes-triage-expert
+cp ./SKILL.md /Users/zongxun/.codex/skills/kubernetes-triage-expert/SKILL.md
+```
+
+### Claude Code
+
+For a personal Claude Code skill:
+
+```bash
+mkdir -p ~/.claude/skills/kubernetes-triage-expert
+cp ./SKILL.md ~/.claude/skills/kubernetes-triage-expert/SKILL.md
+```
+
+For a project-scoped Claude Code skill:
+
+```bash
+mkdir -p ./.claude/skills/kubernetes-triage-expert
+cp ./SKILL.md ./.claude/skills/kubernetes-triage-expert/SKILL.md
+```
+
+Claude Code discovers skills automatically when the request matches the skill description.
+
+### OpenClaw
+
+For a personal OpenClaw skill:
+
+```bash
+mkdir -p ~/.openclaw/skills/kubernetes-triage-expert
+cp ./SKILL.md ~/.openclaw/skills/kubernetes-triage-expert/SKILL.md
+```
+
+For a workspace-scoped OpenClaw skill:
+
+```bash
+mkdir -p ./skills/kubernetes-triage-expert
+cp ./SKILL.md ./skills/kubernetes-triage-expert/SKILL.md
+```
+
+If your OpenClaw setup uses agent-compatible skill folders, you can also place it in `~/.agents/skills/` or `<workspace>/.agents/skills/`.
+
+### ClawHub
+
+Install directly from ClawHub:
+
+```bash
+clawhub install kubernetes-triage-expert
+```
+
+Inspect the published package:
+
+```bash
+clawhub inspect kubernetes-triage-expert
+```
+
+### First Run
+
+Then start a conversation and invoke or describe the task clearly:
+
+```text
+Use the kubernetes-triage-expert skill and stay within skill boundaries only.
+
+namespace=prod
+deployment=checkout-api
+pods are CrashLoopBackOff
+started after today's rollout
+log excerpt: failed to load config: missing REDIS_URL
+```
+
+The skill will not run commands. It will classify the fault, rank likely hypotheses, and ask for the next 1-3 checks.
+
+## Install Options
+
+- Codex skill install: copy [SKILL.md](./SKILL.md) into your Codex skills directory.
+- Claude Code skill install: copy [SKILL.md](./SKILL.md) into `~/.claude/skills/` or `.claude/skills/`.
+- OpenClaw skill install: copy [SKILL.md](./SKILL.md) into `~/.openclaw/skills/` or `./skills/`.
+- ClawHub install: run `clawhub install kubernetes-triage-expert`.
+- Prompt-only use: paste [PROMPT.md](./PROMPT.md) into a constrained chat or evaluation environment.
+- Repo review: read [SKILL.md](./SKILL.md), [docs/EXAMPLES.md](./docs/EXAMPLES.md), and [docs/STRESS_TESTS.md](./docs/STRESS_TESTS.md) before integrating it into a workflow.
+
+## When To Use
+
+Use this skill when you want:
+
+- structured Kubernetes incident triage without fake environment access
+- evidence-based narrowing instead of generic troubleshooting dumps
+- the next highest-value checks rather than broad remediation advice
+- a prompt/skill behavior contract that can be reviewed and tested
+
+Do not use it as:
+
+- a cluster-connected operator
+- a command runner
+- an automatic remediation engine
+- a replacement for application debugging or cloud-internal investigation
+
 ## Overview
 
 General-purpose conversational AI often underperforms in Kubernetes troubleshooting because it tends to:
@@ -52,16 +163,24 @@ This repository is aimed at:
 
 - [SKILL.md](./SKILL.md): full behavioral contract and troubleshooting specification
 - [PROMPT.md](./PROMPT.md): compact runtime prompt suitable for direct deployment
-- [EXAMPLES.md](./EXAMPLES.md): positive and negative examples
-- [STRESS_TESTS.md](./STRESS_TESTS.md): adversarial evaluation cases
-- [docs/README.md](./docs/README.md): Chinese documentation
+- [docs/EXAMPLES.md](./docs/EXAMPLES.md): English examples
+- [docs/EXAMPLES_zh.md](./docs/EXAMPLES_zh.md): Chinese examples
+- [docs/STRESS_TESTS.md](./docs/STRESS_TESTS.md): English adversarial evaluation cases
+- [docs/STRESS_TESTS_zh.md](./docs/STRESS_TESTS_zh.md): Chinese adversarial evaluation cases
+- [docs/EVALUATION_RUBRIC.md](./docs/EVALUATION_RUBRIC.md): evaluation rubric for review and regression testing
+- [docs/EVALUATION_RUBRIC_zh.md](./docs/EVALUATION_RUBRIC_zh.md): Chinese evaluation rubric
+- [docs/REVIEW_TEMPLATE.md](./docs/REVIEW_TEMPLATE.md): reusable review template
+- [docs/MULTI_TURN_REVIEW_TEMPLATE.md](./docs/MULTI_TURN_REVIEW_TEMPLATE.md): multi-turn review template
+- [docs/MULTI_TURN_REVIEW_TEMPLATE_zh.md](./docs/MULTI_TURN_REVIEW_TEMPLATE_zh.md): Chinese multi-turn review template
+- [docs/README_zh.md](./docs/README_zh.md): Chinese quick-start and documentation index
 - [docs/skill_zh.md](./docs/skill_zh.md): Chinese translation of the skill
+- [docs/INTEGRATION_GUIDE.md](./docs/INTEGRATION_GUIDE.md): integration principles, scenarios, and patterns
 
 ## Source of Truth
 
-- [PROMPT.md](./PROMPT.md) is the runtime source of truth and should be used for actual model invocation.
-- [SKILL.md](./SKILL.md) is the compact design and behavior specification.
-- Supporting docs must follow the runtime behavior defined in [PROMPT.md](./PROMPT.md), especially output language and boundary rules.
+- [SKILL.md](./SKILL.md) is the primary source of truth for behavior, structure, and guardrails.
+- [PROMPT.md](./PROMPT.md) is the runtime-oriented condensed prompt and must stay aligned with [SKILL.md](./SKILL.md).
+- Supporting docs must follow the behavior defined in [SKILL.md](./SKILL.md), especially language policy, evidence thresholds, and boundary rules.
 
 ## Design Principles
 
@@ -97,8 +216,12 @@ It may not:
 The skill is optimized for high-frequency Kubernetes fault classes, including:
 
 - `CrashLoopBackOff`
+- `CreateContainerConfigError`
+- `CreateContainerError`
+- `ContainerCreating`
 - `Pending`
 - `ImagePullBackOff` and `ErrImagePull`
+- DNS and connection failures such as `no such host`, `connection refused`, and `i/o timeout`
 - service reachability failures
 - rollout regressions
 - probe-related instability
@@ -108,38 +231,43 @@ Its responsibility is not to solve every incident end to end. Its responsibility
 
 ## Recommended Reading Order
 
-1. Read [SKILL.md](./SKILL.md) for the full design contract.
-2. Use [PROMPT.md](./PROMPT.md) as the deployment-ready prompt.
-3. Review [EXAMPLES.md](./EXAMPLES.md) to understand expected good and bad behavior.
-4. Use [STRESS_TESTS.md](./STRESS_TESTS.md) to evaluate robustness and boundary discipline.
+1. Use the Quick Start section above to install and try the skill.
+2. Read [SKILL.md](./SKILL.md) for the full design contract.
+3. Use [PROMPT.md](./PROMPT.md) as the deployment-ready prompt.
+4. Review [docs/EXAMPLES.md](./docs/EXAMPLES.md) to understand expected good and bad behavior.
+5. Use [docs/STRESS_TESTS.md](./docs/STRESS_TESTS.md) or [docs/STRESS_TESTS_zh.md](./docs/STRESS_TESTS_zh.md) to evaluate robustness and boundary discipline.
+6. Use [docs/EVALUATION_RUBRIC.md](./docs/EVALUATION_RUBRIC.md) when scoring outputs or running regressions.
+7. Read [docs/INTEGRATION_GUIDE.md](./docs/INTEGRATION_GUIDE.md) when wiring the skill into a broader tool flow.
 
 ## Example Output Shape
 
-```md
-故障判断
-- 类型:
-- 严重性初判:
-- 当前阶段:
+The skill uses one output language per response, follows the user's current language, and keeps technical identifiers in their original form.
 
-已确认事实
+```md
+Assessment
+- Fault class:
+- Initial severity:
+- Current stage:
+
+Confirmed Facts
 - ...
 
-主要假设
+Leading Hypotheses
 1. ...
 2. ...
 3. ...
 
-下一步检查
-1. 检查项:
-   原因:
-   如果成立:
-   如果不成立:
+Next Checks
+1. Check:
+   Why it matters:
+   If yes:
+   If no:
 
-当前结论
-- 已确认:
-- 高概率:
-- 已排除:
-- 仍需证据:
+Current Conclusion
+- Confirmed:
+- Likely:
+- Ruled out:
+- Still needed:
 ```
 
 ## Evaluation Criteria
@@ -150,6 +278,8 @@ A strong response should:
 - reduce uncertainty
 - avoid overclaiming
 - keep the next checks limited and high-value
+- adapt output language without switching to bilingual output unless requested
+- calibrate depth to low, medium, or high evidence situations
 - distinguish Kubernetes-level problems from application, runtime, or cloud-provider problems
 
 A weak response usually:

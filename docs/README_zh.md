@@ -4,6 +4,32 @@
 
 这个仓库定义的是一种严格受限的排障工作方式：只基于用户已经提供的证据进行 Kubernetes 初筛与诊断推进。
 
+## 快速安装
+
+如果你使用 OpenClaw / ClawHub，可以直接安装已发布版本：
+
+```bash
+clawhub install kubernetes-triage-expert
+```
+
+查看已发布包信息：
+
+```bash
+clawhub inspect kubernetes-triage-expert
+```
+
+## 文档入口
+
+如果你想快速上手，请先看：
+
+- [../README.md](../README.md)
+
+如果你想看详细规范，请继续阅读：
+
+- [../SKILL.md](../SKILL.md)
+- [skill_zh.md](./skill_zh.md)
+- [INTEGRATION_GUIDE_zh.md](./INTEGRATION_GUIDE_zh.md)
+
 ## 概述
 
 很多通用对话式 AI 在 Kubernetes 排障中会出现几个典型问题：
@@ -45,15 +71,22 @@
 
 - [SKILL.md](../SKILL.md)：完整 skill 规范与行为约束
 - [PROMPT.md](../PROMPT.md)：可直接投喂模型的精简 prompt
-- [EXAMPLES.md](../EXAMPLES.md)：正反例示例集
-- [STRESS_TESTS.md](../STRESS_TESTS.md)：压力测试用例
+- [EXAMPLES.md](./EXAMPLES.md)：英文示例集
+- [EXAMPLES_zh.md](./EXAMPLES_zh.md)：中文示例集
+- [STRESS_TESTS.md](./STRESS_TESTS.md)：英文压力测试用例
+- [STRESS_TESTS_zh.md](./STRESS_TESTS_zh.md)：中文压力测试用例
+- [EVALUATION_RUBRIC.md](./EVALUATION_RUBRIC.md)：评估与回归测试评分标准
+- [EVALUATION_RUBRIC_zh.md](./EVALUATION_RUBRIC_zh.md)：中文评分标准
+- [REVIEW_TEMPLATE.md](./REVIEW_TEMPLATE.md)：评审模板
+- [MULTI_TURN_REVIEW_TEMPLATE.md](./MULTI_TURN_REVIEW_TEMPLATE.md)：多轮评审模板
+- [MULTI_TURN_REVIEW_TEMPLATE_zh.md](./MULTI_TURN_REVIEW_TEMPLATE_zh.md)：中文多轮评审模板
 - [skill_zh.md](./skill_zh.md)：`SKILL.md` 的中文翻译
 
 ## 规范主文件
 
-- [PROMPT.md](../PROMPT.md) 是运行时主文件，应以它为准。
-- [SKILL.md](../SKILL.md) 是设计与行为规范文件。
-- 其他文档都应服从 [PROMPT.md](../PROMPT.md) 中定义的边界、语言和输出规则。
+- [SKILL.md](../SKILL.md) 是行为、结构和约束的主规范。
+- [PROMPT.md](../PROMPT.md) 是面向运行时的精简 prompt，应与 [SKILL.md](../SKILL.md) 保持一致。
+- 其他文档都应服从 [SKILL.md](../SKILL.md) 中定义的边界、语言和输出规则。
 
 ## 设计原则
 
@@ -102,8 +135,9 @@
 
 1. 先阅读 [SKILL.md](../SKILL.md)，理解完整约束和设计逻辑。
 2. 使用 [PROMPT.md](../PROMPT.md) 作为运行时 prompt。
-3. 通过 [EXAMPLES.md](../EXAMPLES.md) 观察好输出与坏输出的差异。
-4. 使用 [STRESS_TESTS.md](../STRESS_TESTS.md) 做稳定性与边界测试。
+3. 通过 [EXAMPLES_zh.md](./EXAMPLES_zh.md) 或 [EXAMPLES.md](./EXAMPLES.md) 观察好输出与坏输出的差异。
+4. 使用 [STRESS_TESTS_zh.md](./STRESS_TESTS_zh.md) 或 [STRESS_TESTS.md](./STRESS_TESTS.md) 做稳定性与边界测试。
+5. 使用 [EVALUATION_RUBRIC.md](./EVALUATION_RUBRIC.md) 对输出做评分、回归评审或模型对比。
 
 ## 输出结构示例
 

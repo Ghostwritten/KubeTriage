@@ -7,7 +7,7 @@ These cases are designed to test whether the skill stays inside its boundary, pr
 ### User Input
 
 ```md
-线上挂了，k8s 有问题
+Production is down, Kubernetes has a problem
 ```
 
 ### What Good Behavior Looks Like
@@ -26,7 +26,7 @@ These cases are designed to test whether the skill stays inside its boundary, pr
 ### User Input
 
 ```md
-外部访问 503，ingress 没流量，后端 pod 都是 Pending
+External traffic gets 503, ingress has no traffic, backend pods are all Pending
 ```
 
 ### What Good Behavior Looks Like
@@ -62,7 +62,7 @@ pod CrashLoopBackOff
 ### User Input
 
 ```md
-11:05 发布后新 pod 陆续不健康，老 pod 还正常
+After the 11:05 rollout, new pods became unhealthy while old pods stayed healthy
 ```
 
 ### What Good Behavior Looks Like
@@ -80,7 +80,7 @@ pod CrashLoopBackOff
 ### User Input
 
 ```md
-Pod Running，Readiness 也正常，但接口返回 500，日志里是 SQL syntax error
+Pod is Running, readiness is healthy, but the API returns 500 and logs show SQL syntax error
 ```
 
 ### What Good Behavior Looks Like
@@ -98,7 +98,7 @@ Pod Running，Readiness 也正常，但接口返回 500，日志里是 SQL synta
 ### User Input
 
 ```md
-Service 有 ClusterIP，所以网络应该没问题吧？
+The Service has a ClusterIP, so the network should be fine, right?
 ```
 
 ### What Good Behavior Looks Like
@@ -134,7 +134,7 @@ Service 有 ClusterIP，所以网络应该没问题吧？
 ### User Input
 
 ```md
-容器能启动十几秒，随后被重启，event 里一直是 Liveness probe failed
+The container starts for about ten seconds, then restarts, and events keep showing Liveness probe failed
 ```
 
 ### What Good Behavior Looks Like
@@ -152,7 +152,7 @@ Service 有 ClusterIP，所以网络应该没问题吧？
 ### User Input
 
 ```md
-怀疑是 CNI 问题，但是我现在没有 node 日志，也没有网络策略信息
+I suspect a CNI issue, but I do not have node logs or network policy details yet
 ```
 
 ### What Good Behavior Looks Like
@@ -188,7 +188,7 @@ event: Failed to pull image, unauthorized: authentication required
 ### User Input
 
 ```md
-我觉得是内存不够，但 describe 里没有 OOMKilled，日志是 failed to parse config
+I think this is a memory issue, but describe shows no OOMKilled and the logs say failed to parse config
 ```
 
 ### What Good Behavior Looks Like
@@ -206,7 +206,7 @@ event: Failed to pull image, unauthorized: authentication required
 ### User Input
 
 ```md
-pod Pending，event 里有 pod has unbound immediate PersistentVolumeClaims
+pod Pending, and the event says pod has unbound immediate PersistentVolumeClaims
 ```
 
 ### What Good Behavior Looks Like
@@ -224,7 +224,7 @@ pod Pending，event 里有 pod has unbound immediate PersistentVolumeClaims
 ### User Input
 
 ```md
-service endpoints 为空，但 pod 都是 Ready
+service endpoints are empty, but all pods are Ready
 ```
 
 ### What Good Behavior Looks Like
@@ -242,7 +242,7 @@ service endpoints 为空，但 pod 都是 Ready
 ### User Input
 
 ```md
-刚发版后报警了，但 scheduler event 是 node had untolerated taint
+The alert fired right after deployment, but the scheduler event says node had untolerated taint
 ```
 
 ### What Good Behavior Looks Like
